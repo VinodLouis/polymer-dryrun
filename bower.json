@@ -1,0 +1,18 @@
+{
+  "name": "polymer-dryrun",
+  "main": "index.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "promise-polyfill": "PolymerLabs/promise-polyfill#^2.0.1",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.6",
+    "iron-list": "PolymerElements/iron-list#^2.0.11",
+    "iron-icons": "PolymerElements/iron-icons#^2.0.1",
+    "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^2.0.1",
+    "app-localize-behavior": "PolymerElements/app-localize-behavior#^2.0.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  }
+}

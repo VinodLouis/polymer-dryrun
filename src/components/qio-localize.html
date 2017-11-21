@@ -1,0 +1,71 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="../components/qio-slot-transformer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-localize">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host, :host ::slotted(*) {font-family: var(--qio-font-main);}
+        </style>
+        <template is="dom-if" if="[[_missingTranslation]]">
+            <iron-ajax auto="" method="POST" body="[[_missingTranslation]]" url="/l10n/add"></iron-ajax>
+        </template>
+        <slot id="slot"></slot>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioLocalize extends Polymer.mixinBehaviors([Polymer.AppLocalizeBehavior,Polymer.QioSlotTransformer], Polymer.Element) {
+      static get is() { return 'qio-localize'; }
+      static get observers() {return ['update(lang)'];}
+
+		constructor() {
+			super();
+			this._promises = [];
+			this.addEventListener(
+				'app-localize-resources-loaded', () => this._resourcesLoaded()
+			);
+		}
+
+		update() {
+			this.loadResources(this.resolveUrl(`/src/locales/${this.lang}.json`));
+		}
+		_resourcesLoaded() {
+			this._loaded = true;
+			for(let p of this._promises) p.resolve(this._translate(p.str, p.node));
+			this._promises = [];
+		}
+		transform(str, node) {
+			if(this._loaded) return Promise.resolve(this._translate(str, node));
+			return new Promise(resolve => this._promises.push({str, resolve, node}));
+		}
+		_translate(str, node) {
+			const translation = this.localize(str);
+			if(!translation) this._addMissing(str, node);
+			return translation;
+		}
+		_addMissing(str, node) {
+			if(location.hostname !== 'localhost') return;
+			const trace = [];
+			let element = node;
+			while(element.parentElement) {
+				trace.push(element.parentElement.nodeName.toLowerCase());
+				element = element.parentElement;
+			}
+			trace.push(element.baseURI.match(/[^/]*$/)[0]);
+			if(trace[0] === 'qio-localize') trace.shift();
+			this._missingTranslation = JSON.stringify({
+				msgid   : str,
+				comments: {'reference':trace.reverse().join(' ')},
+			});
+		}
+    }
+
+    window.customElements.define(QioLocalize.is, QioLocalize);
+  </script>
+</dom-module>

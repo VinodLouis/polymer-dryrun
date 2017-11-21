@@ -1,0 +1,62 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./qio-localize.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-flagged-text">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {
+            display: inline-block;
+            }
+            :host, :host ::slotted(*) {font-family: var(--qio-font-main);}
+            :host(.disabled) {
+            background-color: var(--qio-disabled-color);
+            color: var(--qio-disabled-color-inverted);
+            cursor: not-allowed;
+            }
+            :host(.highlight) {
+            color: var(--qio-secondary-color);
+            }
+            :host(.highlight.inverted) {
+            background-color: var(--qio-secondary-color);
+            color: var(--qio-secondary-color-inverted);
+            }
+            :host(.error) {
+            color: var(--qio-error-color);
+            }
+            :host(.error.inverted) {
+            background-color: var(--qio-error-color);
+            color: var(--qio-error-color-inverted);
+            }
+            :host(.ok) {
+            color: var(--qio-ok-color);
+            }
+            :host(.ok.inverted) {
+            background-color: var(--qio-ok-color);
+            color: var(--qio-ok-color-inverted);
+            }
+            :host(.warning) {
+            color: var(--qio-warning-color);
+            }
+            :host(.warning.inverted) {
+            background-color: var(--qio-warning-color);
+            color: var(--qio-warning-color-inverted);
+            }
+        </style>
+        <template is="dom-if" if="[[noLocalize]]"><slot></slot></template>
+        <template is="dom-if" if="[[!noLocalize]]"><qio-localize><div><slot></slot></div></qio-localize></template>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioFlaggedText extends Polymer.Element {
+        static get is() {return 'qio-flagged-text';}
+		static get properties() {return {noLocalize:{type:Boolean, value:false}};}
+    }
+
+    window.customElements.define(QioFlaggedText.is, QioFlaggedText);
+  </script>
+</dom-module>

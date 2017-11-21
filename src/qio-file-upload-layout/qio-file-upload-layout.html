@@ -1,0 +1,213 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/device-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/places-icons.html">
+<link rel="import" href="../components/qio-box.html">
+<link rel="import" href="../components/qio-main-title.html">
+<link rel="import" href="../components/qio-sub-title.html">
+<link rel="import" href="../components/qio-time.html">
+<link rel="import" href="../components/qio-button.html">
+<link rel="import" href="../components/qio-date-time.html">
+<link rel="import" href="../components/qio-localize.html">
+<link rel="import" href="../components/qio-flagged-text.html">
+<link rel="import" href="../components/qio-dialog-open-button.html">
+<link rel="import" href="../components/qio-dialog.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-list/iron-list.html">
+
+
+
+<dom-module id="qio-file-upload-layout">
+  <link rel="import" href="../styles/custom-styles.css" type="css">
+  <template>
+
+    <style>
+
+      :host {
+      display: inline-block;
+      }
+
+      :host > qio-box {
+      display: flex;
+      flex-direction: column;
+      padding: var(--qio-standard-padding) var(--qio-double-padding);
+      flex: 1;
+      }
+
+      @media (max-width: 780px) {
+      :host > qio-box {
+      flex: 1 0 25.5rem;
+      }
+      }
+
+      :host .info > div + div {
+      display: flex;
+      justify-content: space-between;
+      }
+      :host .info iron-icon {
+      position: relative;
+      bottom: 1px;
+      }
+      :host .info qio-flagged-text.withWarnings {
+      cursor: pointer;
+      text-decoration: underline;
+      }
+      :host .info > div + div > label            {flex: 1 1;}
+      :host .info > div + div > qio-flagged-text {flex: 0 0 2.5rem;}
+      :host .info > div + div > qio-flagged-text {
+      text-align: right;
+      padding-right: 0.25rem;
+      border-radius: var(--qio-border-radius);
+      }
+      :host .info > div + div > qio-flagged-text + qio-flagged-text {
+      margin-left: 0.25rem;
+      }
+
+      :host > qio-box > qio-button,
+      :host > qio-box > qio-dialog-open-button {
+      min-width: 12rem;
+      }
+      :host qio-dialog p {
+      max-width: 22rem;
+      }
+
+      :host #warningScroller {
+      height: 25rem;
+      width: 30rem;
+      overflow: auto;
+      }
+      :host iron-list {height: 25rem;}
+      :host iron-list > div {
+      word-wrap: break-word;
+      max-width: 30rem;
+      }
+
+      :host > div > div.gap {flex: 1 0 var(--qio-quarter-space);}
+
+      :host > qio-box > * + * {
+      margin-top: var(--qio-double-space);
+      }
+
+      :host .placeholder {opacity: 0.001;}
+
+      :host iia-upload + iia-upload {margin-left: 1rem;}
+    </style>
+
+
+      <qio-box>
+        <qio-main-title>[[mainTitle]]</qio-main-title>
+        <div class="info">
+          <qio-sub-title>[[lastUploadTitle]]</qio-sub-title>
+          <div>
+            <iron-icon icon="icons:schedule"></iron-icon>
+            <qio-date-time>[[lastUploadTime]]</qio-date-time>
+          </div>
+        </div>
+        <qio-button on-click="_acceptSap" icon="cloud-upload" class$="[[_acceptButtonClass(commissionable)]]">Accept</qio-button>
+        <div class="info">
+          <qio-sub-title>[[thisUploadTitle]]</qio-sub-title>
+          <div>
+            <iron-icon icon="icons:schedule"></iron-icon>
+            <qio-date-time>[[thisUploadTime]]</qio-date-time>
+          </div>
+          <div>
+            <label>
+              <iron-icon icon="icons:warning"></iron-icon>
+              <qio-localize>This:</qio-localize>
+            </label>
+            <qio-flagged-text on-click="_showWarnings" warning="thisUploadWarnings" no-localize="" heading="File Warnings" class$="warning [[_hasWarnings(thisUploadWarnings.length)]] [[_deltaGtOneTenth(thisUploadWarnings.length, lastUploadWarnings.length)]]">[[thisUploadWarnings.length]]</qio-flagged-text>
+            <qio-flagged-text no-localize="" on-click="_showWarnings" warning="thisUploadErrors" heading="File Errors" class$="error [[_hasWarnings(thisUploadErrors.length)]] [[_deltaGtOneTenth(thisUploadErrors.length, lastUploadErrors.length)]]">[[thisUploadErrors.length]]</qio-flagged-text>
+          </div>
+          <div>
+            <label>
+              <iron-icon icon="icons:warning"></iron-icon>
+              <qio-localize>Previous:</qio-localize>
+            </label>
+            <qio-flagged-text no-localize="" on-click="_showWarnings" warning="lastUploadWarnings" heading="File Warnings" class$="warning [[_hasWarnings(lastUploadWarnings.length)]]">[[lastUploadWarnings.length]]</qio-flagged-text>
+            <qio-flagged-text no-localize="" on-click="_showWarnings" warning="lastUploadErrors" heading="File Errors" class$="error [[_hasWarnings(lastUploadErrors.length)]]">[[lastUploadErrors.length]]</qio-flagged-text>
+          </div>
+        </div>
+        <qio-dialog-open-button dialog="upload" icon="file-upload">Upload</qio-dialog-open-button>
+      </qio-box>
+
+      <qio-dialog id="upload">
+        <qio-main-title>[[uploadTitle]]</qio-main-title>
+        <p><qio-localize>[[uploadMessage]]</qio-localize></p>
+        <template is="dom-if" if="[[actualFileCount]]">
+          <p><qio-flagged-text class="error">
+            <qio-localize placeholder="{&quot;actualFileCount&quot;:[[actualFileCount]]}">
+              Expected 2 files, got ${actualFileCount}!
+            </qio-localize>
+          </qio-flagged-text></p>
+        </template>
+        <iia-upload accept=".txt, .xlsx" task="Upload_Engine_Program" expected-file-count="2" actual-file-count="{{actualFileCount}}">Upload</iia-upload>
+      </qio-dialog>
+
+      <qio-dialog id="warnings">
+        <qio-main-title>[[_issueHeading]]</qio-main-title>
+        <div id="warningScroller">
+          <iron-list items="[[_warnings]]" scroll-target="warningScroller">
+            <template><div>[[item]]<hr></div></template>
+          </iron-list>
+        </div>
+      </qio-dialog>
+
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioFileUploadLayout extends Polymer.Element {
+      static get is() { return 'qio-file-upload-layout'; }
+      static get properties() {
+        return {
+      mainTitle : String,
+      lastUploadTitle: String,
+      thisUploadTitle: String,
+      lastUploadTime: String,
+      thisUploadTime: String,
+      lastUploadWarnings: Array,
+      lastUploadErrors: Array,
+      thisUploadWarnings: Array,
+      thisUploadErrors: Array,
+      commissionable: Boolean,
+      uploadTitle: String,
+      uploadMessage: String,
+    };
+      }
+      constructor() {
+      super();
+    }
+    _acceptButtonClass(data) {return data ? 'warning' : 'disabled';}
+    _acceptSap() {this.commissionSap = true;}
+    _acceptEngineProg() {this.commissionEp = true;}
+    _deltaGtOneTenth(a, b) {
+      const max = (a > b) ? a : b;
+      const min = (a > b) ? b : a;
+      const delta = max - min;
+      return (delta > (max / 10)) ? 'inverted' : '';
+    }
+
+    _showWarnings(evt) {
+      const path = evt.target.getAttribute('warning');
+      const warn = this.get(path);
+      if(!warn || !warn.length) return;
+      this._issueHeading = evt.target.getAttribute('heading');
+      this._warnings = warn.slice(0, 2000);
+      this.$.warnings.opened = true;
+    }
+
+    _hasWarnings(number) {return number ? 'withWarnings' : '';}
+    }
+
+    window.customElements.define(QioFileUploadLayout.is, QioFileUploadLayout);
+  </script>
+</dom-module>

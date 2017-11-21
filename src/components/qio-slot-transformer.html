@@ -1,0 +1,102 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-slot-transformer">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {display: inline-block;}
+            :host, :host ::slotted(*) {font-family: var(--qio-font-main);}
+        </style>
+        <slot id="slot"></slot>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+     const localizers = [];
+    class QioSlotTransformer extends Polymer.Element {
+      static get is() {return 'qio-slot-transformer';}
+		static get properties() {
+			return {
+				globalLanguage:{observer: '_setGlobalLanguage'},
+				lang:{
+					type: String,
+					value: document.documentElement.lang,
+					notify: true,
+				},
+				localized: {type:String, notify:true},
+				placeholder: {type:Object, observer: '_localize'},
+			};
+		}
+		constructor() {
+			super();
+			localizers.push(this);
+		}
+
+		ready() {
+			super.ready();
+			new Polymer.FlattenedNodesObserver(
+				this.$.slot, () => this._localize()
+			);
+		}
+
+		_localize() {
+			const nodes = this.$.slot.assignedNodes({flatten:true});
+			const array = [];
+			for(let i = 0; i < nodes.length; i++) array.push(nodes[i]);
+			for(let node of array) {if(node.nodeType === 3) { // text node
+				if(!node.qioOrigText) node.qioOrigText = node.nodeValue;
+				this._observe(node);
+				this.transform(this._trim(node), node)
+				.then(transformed => this._applyTransformation(node, transformed));
+			}}
+		}
+
+		_trim(node) {return node.qioOrigText.replace(/(^\s+)|(\s+$)/g, '');}
+
+		_applyTransformation(node, transformed) {
+			transformed = (transformed || this._trim(node));
+			transformed = this._replacePlaceholder(transformed);
+			this.localized = transformed;
+			if(node.nodeValue !== transformed) {
+				this._lastMutation = transformed;
+				node.nodeValue = transformed;
+				this.dispatchEvent(new CustomEvent('transformed'));
+			}
+		}
+
+		_replacePlaceholder(transformed) {
+			if(!this.placeholder) return transformed;
+			let placeholder = (typeof(this.placeholder) === 'string') ?
+				JSON.parse(this.placeholder) : this.placeholder;
+			for(let key of Object.keys(placeholder)) {
+				transformed = transformed.replace('${' + key + '}', placeholder[key]);
+			}
+			return transformed;
+		}
+
+		_observe(node) {
+			if(node.qioObserver) return;
+			node.qioObserver = new MutationObserver(() => {
+				if(this._lastMutation === node.nodeValue) return;
+				node.qioOrigText = node.nodeValue;
+				this._localize();
+			});
+			const config = {characterData: true };
+			node.qioObserver.observe(node, config);
+		}
+
+		_setGlobalLanguage(lang) {
+			document.documentElement.lang = lang;
+			for(let l10n of localizers) {
+				l10n.lang = lang;
+				if(l10n._loaded) l10n._localize();
+			}
+		}
+    }
+
+    Polymer.QioSlotTransformer = QioSlotTransformer;
+  </script>
+</dom-module>

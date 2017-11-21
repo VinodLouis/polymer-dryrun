@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-dialog">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {
+            display: block;
+            margin: 24px 40px;
+
+            background: var(--paper-dialog-background-color, var(--primary-background-color));
+            color: var(--paper-dialog-color, var(--primary-text-color));
+
+            @apply --paper-font-body1;
+            @apply --shadow-elevation-16dp;
+            @apply --paper-dialog;
+            }
+
+            :host > ::slotted(*) {
+            margin-top: 20px;
+            padding: 0 24px;
+            }
+
+            :host > ::slotted(.no-padding) {
+            padding: 0;
+            }
+
+
+            :host > ::slotted(h2) {
+            position: relative;
+            margin: 0;
+            @apply --paper-font-title;
+
+            @apply --paper-dialog-title;
+            }
+
+            :host > ::slotted(*:first-child) {
+            margin-top: 24px;
+            }
+
+            :host > ::slotted(*:last-child) {
+            margin-bottom: 24px;
+            }
+
+            :host > ::slotted(.buttons) {
+            position: relative;
+            padding: 8px 8px 8px 24px;
+            margin: 0;
+
+            color: var(--paper-dialog-button-color, var(--primary-color));
+
+            @apply --layout-horizontal;
+            @apply --layout-end-justified;
+            }
+        </style>
+
+        <slot></slot>
+    </template>
+    <!--<link rel="import" href="../styles/paper-dialog-shared-styles.css" type="css">-->
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioDialog extends Polymer.mixinBehaviors([Polymer.PaperDialogBehavior,Polymer.NeonAnimationRunnerBehavior],Polymer.Element) {
+      static get is() { return 'qio-dialog'; }
+
+      ready(){
+        super.ready();
+         this.addEventListener('neon-animation-finish', this._onNeonAnimationFinish);
+      }
+      _renderOpened() {
+      this.cancelAnimation();
+      this.playAnimation('entry');
+    }
+
+    _renderClosed() {
+      this.cancelAnimation();
+      this.playAnimation('exit');
+    }
+
+    _onNeonAnimationFinish() {
+      if (this.opened) {
+        this._finishRenderOpened();
+      } else {
+        this._finishRenderClosed();
+      }
+    }
+    }
+
+    window.customElements.define(QioDialog.is, QioDialog);
+  </script>
+</dom-module>

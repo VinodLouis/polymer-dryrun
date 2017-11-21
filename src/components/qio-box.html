@@ -1,0 +1,26 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<dom-module id="qio-box">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {
+            background-color: var(--qio-secondary-background-color);
+            padding: var(--qio-standard-padding);
+            border-radius: var(--qio-border-radius);
+            }
+        </style>
+        <slot></slot>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioBox extends Polymer.Element {
+      static get is() { return 'qio-box'; }
+    }
+
+    window.customElements.define(QioBox.is, QioBox);
+  </script>
+</dom-module>

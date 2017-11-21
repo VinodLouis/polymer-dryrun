@@ -1,0 +1,251 @@
+<style is="custom-style">
+    html {
+
+    /* TODO: define QIO default style*/
+    --qio-primary-color: black;
+    --qio-secondary-color: gray;
+    --qio-border-color: gray;
+    --qio-primary-background-color: white;
+    --qio-secondary-background-color: gray;
+    --qio-tertiary-background-color: silver;
+
+    --qio-link-color: var(--qio-primary-color);
+
+    --qio-rem: 16px;
+    --qio-font-main: sans-serif;
+    --qio-font-interactive: var(--qio-font-main);
+    --qio-primary-text-color: black;
+    --qio-primary-text-color-inverted: white;
+    --qio-secondary-text-color: gray;
+    --qio-inverted-text-color: white;
+    --qio-faded-text-color: gray;
+    --qio-error-text: red;
+    --qio-warning-text: orange;
+    --qio-success-text: green;
+
+    --qio-shadow-low: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+    0 1px 5px 0 rgba(0, 0, 0, 0.12),
+    0 3px 1px -2px rgba(0, 0, 0, 0.2);
+
+    /* ======= dimensions ====== */
+
+    /* type */
+    --qio-xxl-text:  2rem;
+    --qio-xl-text:   1.5rem;
+    --qio-l-text:    1.25rem;
+    --qio-m-text:    1rem;
+    --qio-s-text:    .75rem;
+    --qio-xs-text:   .625rem;
+
+    /* line heights */
+    --qio-xl-line: 3rem;
+    --qio-l-line:  2.25rem;
+    --qio-m-line:  1.5rem;
+    --qio-s-line:  1rem;
+    --qio-xs-line: .75rem;
+
+    /* padding, margins, elements */
+    --qio-quad-space: 4rem;
+    --qio-double-space: 2rem;
+    --qio-standard-space: 1rem;
+    --qio-three-quarter-space: .75rem;
+    --qio-half-space: .5rem;
+    --qio-quarter-space: .25rem;
+
+    --qio-standard-padding: var(--qio-standard-space);
+    --qio-confined-padding: var(--qio-half-space) var(--qio-standard-space);
+    --qio-double-padding: var(--qio-double-space);
+
+    --qio-border: 1px solid var(--qio-border-color);
+    --qio-border-radius: .25rem;
+
+    --qio-bordered-double-space:        calc(var(--qio-double-space) - 1px);
+    --qio-bordered-standard-space:      calc(var(--qio-standard-space) - 1px);
+    --qio-bordered-three-quarter-space: calc(var(--qio-threeQuarter-space) - 1px);
+    --qio-bordered-half-space:          calc(var(--qio-half-space) - 1px);
+    --qio-bordered-quarter-space:       calc(var(--qio-quarter-space) - 1px);
+
+    --qio-bordered-standard-padding: var(--qio-bordered-standard-space);
+    --qio-bordered-confined-padding: var(--qio-bordered-half-space) var(--qio-bordered-standard-space);
+
+    /* buttons */
+    --qio-interactive-primary-color: var(--qio-inverted-text-color);
+    --qio-interactive-primary-color-inverted: var(--qio-primary-color);
+    --qio-interactive-primary-focus-color:   var(--qio-primary-text-color-inverted);
+    --qio-interactive-primary-bg:            var(--qio-primary-color);
+    --qio-interactive-primary-bg-inverted: var(--qio-inverted-text-color);
+    --qio-interactive-primary-focus-bg:      var(--qio-primary-color);
+
+    --qio-interactive-theme: {
+    margin: 0;
+    font-size: var(--qio-m-text);
+    font-family: var(--qio-font-interactive);
+    line-height: var(--qio-m-line);
+    text-shadow: none;
+    text-transform: none;
+    outline: none;
+    border: none;
+    border-radius: var(--qio-border-radius);
+    cursor: pointer;
+    }
+    --qio-interactive-primary-theme: {
+    color: var(--qio-interactive-primary-color);
+    @apply --qio-interactive-theme;
+    }
+
+    /* tables */
+    --qio-table-theme: {
+    border: 0 none transparent;
+    }
+    --qio-tcell-theme: {
+    border: 0 none transparent;
+    }
+    --qio-th-theme: {
+    color: var(--qio-primary-color-inverted);
+    background-color: var(--qio-primary-color);
+    }
+    --qio-td-theme: {
+    color: var(--qio-primary-text-color);
+    background-color: var(--qio-primary-background-color);
+    border-width: 0;
+    border-bottom: 0 none transparent;
+    }
+    --qio-td-row-odd-theme: {
+    color: var(--qio-primary-text-color);
+    background-color: var(--qio-tertiary-background-color);
+    }
+
+    --qio-input-theme: {
+    font-size     : inherit;
+    border: 0 none transparent;
+    border-bottom: 2px solid var(--qio-interactive-primary-bg);
+    background: transparent;
+    color: var(--qio-interactive-primary-bg);
+    }
+    --qio-input-inverted-theme: {
+    border-bottom-color: var(--qio-interactive-primary-bg-inverted);
+    color: var(--qio-interactive-primary-bg-inverted);
+    }
+    --qio-input-error-theme: {
+    border-bottom-color: var(--qio-error-text);
+    color: var(--qio-error-text);
+    }
+    --qio-input-inverted-error-theme: {
+    border-bottom-color: var(--qio-error-text);
+    color: var(--qio-error-text);
+    }
+    --qio-input-warning-theme: {
+    border-bottom-color: var(--qio-warning-text);
+    color: var(--qio-warning-text);
+    }
+    --qio-input-inverted-warning-theme: {
+    border-bottom-color: var(--qio-warning-text);
+    color: var(--qio-warning-text);
+    }
+    --qio-input-focus-theme: {
+    outline: 1px dotted  var(--qio-interactive-primary-bg);
+    }
+    --qio-input-inverted-focus-theme: {
+    outline: var(--qio-interactive-primary-bg-inverted);
+    }
+    --qio-selection-theme: {
+    color:      var(--qio-interactive-primary-bg-inverted);
+    background: var(--qio-interactive-primary-bg);
+    }
+    --qio-selection-inverted-theme: {
+    color:      var(--qio-interactive-primary-bg);
+    background: var(--qio-interactive-primary-bg-inverted);
+    }
+
+    /* confirmed color pallette */
+    --rr-white: #fff;
+    --rr-blue: #004990;         /* royal blue for headlines, buttons etc. */
+    --rr-brightBlue: #00AFD5;   /* chart elements, pale blue elements border color */
+    --rr-paleBlue: #E1EAF5;     /* secondary headers eg. chart */
+    --rr-bgGrey: #f0f0f0;       /* for content block background */
+    --rr-borderGrey: #A7A9AC;   /* borders */
+    --rr-red: #F93324;
+    --rr-amber: #E3C800;
+    --rr-green: #54C242;
+    --rr-flag: #000;
+    --rr-text: #000;
+
+    --rr-textSecondary: var(--rr-blue);
+    --rr-textInverted: var(--rr-white);
+
+    /* Not confirmed color! */
+    --rr-bgGreyDark: #e0e0e0;       /* for disabled stuff possibly on bgGrey */
+    --rr-blueTh: #2d80c8;       /* blue from roll-royce.com for table headers */
+    /* text */
+    --rr-rem: 16px;
+    --rr-font-main: arial;
+
+    --qio-primary-color: var(--rr-blue);
+    --qio-primary-color-inverted: var(--rr-textInverted);
+    --qio-secondary-color: var(--rr-brightBlue);
+    --qio-secondary-color-inverted: var(--rr-textInverted);
+    /*
+    --qio-secondary-color: var(--rr-brightBlue);
+    --qio-secondary-color-inverted: var(--rr-brightBlue);
+    */
+    --qio-border-color: var(--rr-borderGrey);
+    --qio-primary-background-color: var(--rr-white);
+    --qio-secondary-background-color: var(--rr-bgGrey);
+    --qio-tertiary-background-color: var(--rr-paleBlue);
+
+    --qio-link-color: var(--rr-brightBlue);
+
+    --qio-rem: var(--rr-rem);
+    --qio-font-main: var(--rr-font-main);
+    --qio-primary-text-color: var(--rr-text);
+    --qio-secondary-text-color: var(--rr-textSecondary);
+    --qio-inverted-text-color: var(--rr-textInverted);
+    --qio-faded-text-color: var(--rr-borderGrey);
+
+    --qio-disabled-color: var(--rr-bgGreyDark);
+    --qio-disabled-color-inverted: var(--rr-borderGrey);
+    --qio-error-color: var(--rr-red);
+    --qio-error-color-inverted: var(--rr-white);
+    --qio-ok-color: var(--rr-green);
+    --qio-ok-color-inverted: var(--rr-white);
+    --qio-warning-color: var(--rr-amber);
+    --qio-warning-color-inverted: var(--rr-white);
+    --qio-success-text: var(--rr-green);
+
+
+    --qio-sub-title-theme: {
+    color: var(--qio-primary-color);
+    }
+
+    --qio-interactive-primary-theme: {
+    margin: 0;
+    color: var(--qio-interactive-primary-color);
+    font-size: var(--qio-m-text);
+    font-family: var(--qio-font-interactive);
+    line-height: var(--qio-m-line);
+    text-shadow: none;
+    text-transform: none;
+    outline: none;
+    border: none;
+    border-radius: var(--qio-border-radius);
+    background: var(--rr-brightBlue);
+    cursor: pointer;
+    }
+
+    --qio-interactive-primary-inverted-theme: {
+    background: var(--qio-interactive-primary-color);
+    color: var(--rr-brightBlue);
+    }
+
+    --qio-th-theme: {
+    color: var(--qio-primary-color-inverted);
+    background-color: var(--rr-blueTh);
+    }
+    --paper-dialog: {
+    border-radius: var(--qio-border-radius);
+    padding: var(--qio-double-padding);
+    };
+
+
+    }
+</style>

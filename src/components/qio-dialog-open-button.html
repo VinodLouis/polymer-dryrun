@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./qio-button.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../styles/custom-styles.html">
+<dom-module id="qio-dialog-open-button">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {position: relative;}
+            :host qio-button {
+            min-width: inherit;
+            width: inherit;
+            }
+        </style>
+        <qio-button id="button" class$="[[_class]]" icon="[[icon]]" on-click="_openDialog"><slot></slot></qio-button>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioDialogOpenButton extends Polymer.Element {
+      static get is() {return 'qio-dialog-open-button';}
+		static get properties() {return {
+			/** Class used to style the enclosed qio-button */
+			class: {type:String, oberver: '_onClass'},
+			/** Icon for the enclosed qio-button */
+			icon : String,
+			/** ID of the dialog (defined in the same parent component) to open */
+			dialog: String,
+		};}
+		click() {this.$.button.click();}
+		_onClass() {this._class = this.get('class');}
+		_openDialog() {this._getDialog(this).opened = true;}
+		_getDialog(parent) {
+			while(parent.parentNode) parent = parent.parentNode;
+			const dialog = parent.querySelector(`#${this.dialog}`);
+			return dialog || this._getDialog(parent.host);
+		}
+    }
+
+    window.customElements.define(QioDialogOpenButton.is, QioDialogOpenButton);
+  </script>
+</dom-module>

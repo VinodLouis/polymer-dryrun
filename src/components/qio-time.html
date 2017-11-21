@@ -1,0 +1,40 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./qio-slot-transformer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-time">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioTime extends Polymer.QioSlotTransformer {
+      static get is() {return 'qio-time';}
+		static get properties() {return {invalidDate : {type:String, value:''}};}
+		constructor() {super();}
+
+		transform(str) {
+			const date = new Date(str);
+			const translation = Number.isNaN(date.getTime()) ? this.invalidDate :
+				date[this._transformMethod](this.lang, this._format);
+			return Promise.resolve(translation);
+		}
+		get _format() {
+			return {
+				weekday     : this.weekday,
+				year        : this.year,
+				month       : this.month,
+				day         : this.day,
+				hour        : this.hour,
+				minute      : this.minute,
+				second      : this.second,
+				timeZoneName: this.timeZoneName,
+			};
+		}
+    }
+
+    window.customElements.define(QioTime.is, QioTime);
+    Polymer.QioDateTimeBase = QioTime;
+  </script>
+</dom-module>

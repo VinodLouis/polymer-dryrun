@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/device-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/places-icons.html">
+<link rel="import" href="./qio-localize.html">
+<link rel="import" href="../styles/custom-styles.html">
+<dom-module id="qio-button">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {position: relative;}
+            :host button {
+            min-width: inherit;
+            width: inherit;
+            @apply --qio-interactive-primary-theme;
+            text-align: left;
+            padding: var(--qio-confined-padding);
+            white-space: nowrap;
+            }
+            :host button > iron-icon {
+            margin-right: var(--qio-standard-space);
+            }
+            :host button > span {vertical-align: bottom;}
+
+            :host([disabled]) button,
+            :host(.disabled) button {
+            background-color: var(--qio-disabled-color);
+            color: var(--qio-disabled-color-inverted);
+            cursor: not-allowed;
+            }
+            :host(.error) button {
+            background-color: var(--qio-error-color);
+            color: var(--qio-error-color-inverted);
+            }
+            :host(.ok) button {
+            background-color: var(--qio-ok-color);
+            color: var(--qio-ok-color-inverted);
+            }
+            :host(.warning) button {
+            background-color: var(--qio-warning-color);
+            color: var(--qio-warning-color-inverted);
+            }
+            :host(.link) button {
+            color: var(--qio-link-color);
+            background-color: var(--qio-primary-background-color);
+            }
+            :host(.linkButton) button {
+            color: var(--qio-link-color);
+            border: 2px solid var(--qio-link-color);
+            background-color: var(--qio-primary-background-color);
+            }
+            :host(.disabled.linkButton) button,
+            :host([disabled].linkButton) button {
+            color: var(--qio-disabled-color);
+            border: 2px solid var(--qio-disabled-color);
+            background-color: var(--qio-primary-background-color);
+            }
+        </style>
+        <button id="button" on-click="_click">
+            <template is="dom-if" if="[[icon]]">
+                <iron-icon icon="[[icon]]"></iron-icon>
+            </template>
+            <span>
+                <qio-localize>
+                    <slot></slot>
+                </qio-localize>
+            </span>
+        </button>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioButton extends Polymer.Element {
+      static get is() {return 'qio-button';}
+		static get properties() {return {
+			icon: String,
+			disabled: {type:Boolean, reflectToAttribute: true},
+		};}
+		// constructor() {super();}
+		click() {
+			this.$.button.dispatchEvent(new MouseEvent('click', {
+				'view': window,
+				'bubbles': true,
+				'cancelable': true,
+				'composed':true,
+			}));
+		}
+		_click(evt) {
+			if(this.disabled || this.classList.contains('disabled')) {
+				evt.preventDefault();
+				evt.stopPropagation();
+			}
+		}
+    }
+
+    window.customElements.define(QioButton.is, QioButton);
+  </script>
+</dom-module>

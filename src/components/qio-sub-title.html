@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./qio-localize.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-sub-title">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {
+            color: var(--qio-secondary-color);
+            font-weight: bold;
+            @apply --qio-sub-title-theme;
+            }
+        </style>
+        <template is="dom-if" if="[[noLocalize]]"></template>
+        <template is="dom-if" if="[[!noLocalize]]"><qio-localize><div><slot></slot></div></qio-localize></template>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioSubTitle extends Polymer.Element {
+      static get is() {return 'qio-sub-title';}
+		static get properties() {return {noLocalize:{type:Boolean, value:false}};}
+    }
+
+    window.customElements.define(QioSubTitle.is, QioSubTitle);
+  </script>
+</dom-module>

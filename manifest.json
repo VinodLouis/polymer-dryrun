@@ -1,0 +1,6 @@
+{
+  "name": "polymer-dryrun",
+  "short_name": "polymer-dryrun",
+  "start_url": "/",
+  "display": "standalone"
+}

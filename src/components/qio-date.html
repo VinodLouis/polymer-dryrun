@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="qio-date">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioDate extends Polymer.QioDateTimeBase {
+      static get is() {return 'qio-date';}
+		static get properties() {
+			return {
+				// See: http://norbertlindenberg.com/2012/12/ecmascript-internationalization-api/index.html#DateTimeFormat
+				weekday : {type: String                  }, // 'narrow', 'short', 'long'
+				era     : {type: String, value: 'short'  }, // 'narrow', 'short', 'long'
+				year    : {type: String, value: '2-digit'}, // '2-digit', 'numeric'
+				month   : {type: String, value: '2-digit'}, // '2-digit', 'numeric',
+																			// 'narrow', 'short', 'long'
+				day     : {type: String, value: '2-digit'}, // '2-digit', 'numeric'
+			};
+		}
+		constructor() {super();}
+
+		get _transformMethod() {return 'toLocaleDateString';}
+    }
+
+    window.customElements.define(QioDate.is, QioDate);
+  </script>
+</dom-module>

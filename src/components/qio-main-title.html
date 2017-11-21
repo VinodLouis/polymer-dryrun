@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="./qio-localize.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<dom-module id="qio-main-title">
+    <link rel="import" href="../styles/custom-styles.css" type="css">
+    <template>
+        <style>
+            :host {
+            display: block;
+            color: var(--qio-primary-color);
+            font-size: var(--qio-xl-text);
+            font-weight: bold;
+            white-space: nowrap;
+            }
+        </style>
+        <qio-localize><slot></slot></qio-localize>
+    </template>
+
+    <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class QioMainTitle extends Polymer.Element {
+      static get is() { return 'qio-main-title'; }
+    }
+
+    window.customElements.define(QioMainTitle.is, QioMainTitle);
+  </script>
+</dom-module>
